@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel LalaStreaming</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<section id="login" class="login">
+  <div class="login-card">
+    <img src="logo-lalastreaming.png" class="logo" alt="LalaStreaming">
+    <h1>Panel privado</h1>
+    <p>Ingresa tu contraseña para editar.</p>
+    <input id="pass" type="password" placeholder="Contraseña">
+    <button id="loginBtn" class="primary">Entrar</button>
+    <small>Contraseña inicial: 123456</small>
+  </div>
+</section>
+
+<section id="panel" class="admin hidden">
+  <header class="admin-top">
+    <img src="logo-lalastreaming.png" class="logo" alt="">
+    <h1>Editor de tienda</h1>
+    <a href="index.html" class="primary">Ver tienda</a>
+  </header>
+
+  <main class="admin-grid">
+    <div class="box">
+      <h2>Datos generales</h2>
+      <label>Nombre</label><input id="sTitle">
+      <label>Subtítulo</label><input id="sSubtitle">
+      <label>Descripción</label><textarea id="sDescription"></textarea>
+      <label>WhatsApp</label><input id="sWhatsapp">
+      <label>Tipo de cambio</label><input id="sExchange" type="number" step="0.01">
+      <label>Mensaje WhatsApp automático</label><textarea id="sMsg"></textarea>
+      <small>Usa {producto} para cambiar según la plataforma.</small>
+      <label>Términos</label><textarea id="sTerms"></textarea>
+      <label>Nueva contraseña</label><input id="newPass" placeholder="Opcional">
+      <button id="saveStore" class="primary full">Guardar datos</button>
+    </div>
+
+    <div class="box">
+      <div class="row">
+        <h2>Plataformas</h2>
+        <button id="addProduct" class="secondary">+ Agregar</button>
+      </div>
+      <div id="products"></div>
+      <button id="saveProducts" class="primary full">Guardar plataformas</button>
+    </div>
+  </main>
+</section>
+
+<script src="data.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
