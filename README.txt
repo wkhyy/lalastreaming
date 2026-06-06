@@ -1,20 +1,17 @@
-LalaStreaming PRO Mejorado
+LalaStreaming con categorías y control de ventas
 
 Incluye:
-- Banners promocionales editables.
-- Logos de plataformas como tarjetas visuales editables.
-- Yape y Plin.
-- Ofertas destacadas.
-- Buscador de plataformas.
-- Diseño profesional responsive.
-- Panel privado con contraseña.
+- Catálogo dividido por categorías.
+- Panel para agregar/eliminar categorías.
+- Productos con categoría editable.
+- Control de ventas con fecha, cliente, producto, costo, precio, ganancia, método de pago y estado.
+- KPIs: ventas, ingresos, costos y ganancia.
+- Exportación CSV de ventas.
+- Banners, Yape, Plin, ofertas, buscador y diseño responsive.
 
 Cómo usar:
 1. Abre admin.html.
 2. Contraseña inicial: 123456.
-3. Edita banners, plataformas, precios, imágenes, Yape, Plin y WhatsApp.
+3. Edita categorías, productos, precios y ventas.
 4. Guarda.
-5. Comparte solo index.html o el link principal de GitHub Pages.
-
-En GitHub sube estos archivos a la raíz del repositorio:
-index.html, admin.html, styles.css, app.js, admin.js, data.js, logo-lalastreaming.png
+5. Sube estos archivos a GitHub reemplazando los anteriores.
