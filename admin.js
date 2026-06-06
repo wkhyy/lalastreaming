@@ -1,92 +1,10 @@
 let data = loadData();
-
-loginBtn.onclick = () => {
-  if(pass.value === data.password){
-    login.classList.add("hidden");
-    panel.classList.remove("hidden");
-    loadPanel();
-  }else{
-    alert("Contraseña incorrecta");
-  }
-};
-
-function loadPanel(){
-  sTitle.value = data.store.title;
-  sSubtitle.value = data.store.subtitle;
-  sDescription.value = data.store.description;
-  sWhatsapp.value = data.store.whatsapp;
-  sExchange.value = data.store.exchangeRate;
-  sMsg.value = data.store.whatsappMessage;
-  sTerms.value = data.store.terms;
-  renderProducts();
-}
-
-saveStore.onclick = () => {
-  data.store.title = sTitle.value;
-  data.store.subtitle = sSubtitle.value;
-  data.store.description = sDescription.value;
-  data.store.whatsapp = sWhatsapp.value.replace(/\D/g, "");
-  data.store.exchangeRate = Number(sExchange.value) || 3.75;
-  data.store.whatsappMessage = sMsg.value;
-  data.store.terms = sTerms.value;
-  if(newPass.value.trim()) data.password = newPass.value.trim();
-  saveData(data);
-  alert("Guardado ✅");
-};
-
-addProduct.onclick = () => {
-  data.products.push({name:"Nuevo servicio", desc:"Descripción", price:"0", image:"", active:true});
-  renderProducts();
-};
-
-saveProducts.onclick = () => {
-  saveData(data);
-  alert("Plataformas guardadas ✅");
-};
-
-function renderProducts(){
-  products.innerHTML = "";
-  data.products.forEach((p, i) => {
-    const div = document.createElement("div");
-    div.className = "edit-product";
-    div.innerHTML = `
-      <div class="upload">${p.image ? `<img src="${p.image}">` : "Subir imagen"}<input type="file" accept="image/*"></div>
-      <div>
-        <label>Nombre</label><input value="${p.name}" data-i="${i}" data-f="name">
-        <label>Descripción</label><textarea data-i="${i}" data-f="desc">${p.desc}</textarea>
-        <label>Precio en soles</label><input value="${p.price}" data-i="${i}" data-f="price">
-        <label><input type="checkbox" ${p.active ? "checked" : ""} data-i="${i}" data-f="active"> Mostrar en tienda</label>
-        <button class="danger" data-delete="${i}">Eliminar</button>
-      </div>`;
-    products.appendChild(div);
-  });
-
-  document.querySelectorAll("[data-f]").forEach(el => {
-    el.oninput = el.onchange = () => {
-      const i = el.dataset.i, f = el.dataset.f;
-      data.products[i][f] = f === "active" ? el.checked : el.value;
-    };
-  });
-
-  document.querySelectorAll("[data-delete]").forEach(btn => {
-    btn.onclick = () => {
-      data.products.splice(btn.dataset.delete, 1);
-      renderProducts();
-    };
-  });
-
-  document.querySelectorAll(".upload").forEach((box, i) => {
-    const input = box.querySelector("input");
-    box.onclick = () => input.click();
-    input.onchange = () => {
-      const file = input.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        data.products[i].image = e.target.result;
-        renderProducts();
-      };
-      reader.readAsDataURL(file);
-    };
-  });
-}
+loginBtn.onclick = () => { if(pass.value === data.password){ login.classList.add("hidden"); panel.classList.remove("hidden"); loadPanel(); } else alert("Contraseña incorrecta"); };
+function loadPanel(){ sTitle.value=data.store.title; sSubtitle.value=data.store.subtitle; sDescription.value=data.store.description; sWhatsapp.value=data.store.whatsapp; sYape.value=data.store.yape || data.store.whatsapp; sPlin.value=data.store.plin || data.store.whatsapp; sExchange.value=data.store.exchangeRate; sMsg.value=data.store.whatsappMessage; sTerms.value=data.store.terms; renderBanners(); renderProducts(); }
+saveStore.onclick=()=>{ data.store.title=sTitle.value; data.store.subtitle=sSubtitle.value; data.store.description=sDescription.value; data.store.whatsapp=sWhatsapp.value.replace(/\D/g,""); data.store.yape=sYape.value.replace(/\D/g,""); data.store.plin=sPlin.value.replace(/\D/g,""); data.store.exchangeRate=Number(sExchange.value)||3.75; data.store.whatsappMessage=sMsg.value; data.store.terms=sTerms.value; if(newPass.value.trim()) data.password=newPass.value.trim(); saveData(data); alert("Guardado ✅"); };
+addBanner.onclick=()=>{ if(!data.banners)data.banners=[]; data.banners.push({title:"Nuevo banner",text:"Texto de promoción",active:true}); renderBanners(); };
+saveBanners.onclick=()=>{ saveData(data); alert("Banners guardados ✅"); };
+function renderBanners(){ bannerEditor.innerHTML=""; (data.banners||[]).forEach((b,i)=>{ const div=document.createElement("div"); div.className="edit-banner"; div.innerHTML=`<label>Título</label><input value="${b.title}" data-b="${i}" data-f="title"><label>Texto</label><input value="${b.text}" data-b="${i}" data-f="text"><label><input type="checkbox" ${b.active?"checked":""} data-b="${i}" data-f="active"> Mostrar banner</label><button class="danger" data-delete-banner="${i}">Eliminar</button>`; bannerEditor.appendChild(div); }); document.querySelectorAll("[data-b]").forEach(el=>{el.oninput=el.onchange=()=>{data.banners[el.dataset.b][el.dataset.f]=el.dataset.f==="active"?el.checked:el.value;};}); document.querySelectorAll("[data-delete-banner]").forEach(btn=>{btn.onclick=()=>{data.banners.splice(btn.dataset.deleteBanner,1); renderBanners();};}); }
+addProduct.onclick=()=>{ data.products.push({name:"Nuevo servicio",desc:"Descripción",price:"0",image:"",logo:"LOGO",color:"#9b5cff",offer:false,active:true}); renderProducts(); };
+saveProducts.onclick=()=>{ saveData(data); alert("Plataformas guardadas ✅"); };
+function renderProducts(){ products.innerHTML=""; data.products.forEach((p,i)=>{ const div=document.createElement("div"); div.className="edit-product"; div.innerHTML=`<div class="upload">${p.image?`<img src="${p.image}">`:"Subir imagen"}<input type="file" accept="image/*"></div><div><label>Nombre</label><input value="${p.name}" data-i="${i}" data-f="name"><label>Texto del logo</label><input value="${p.logo||p.name}" data-i="${i}" data-f="logo"><label>Color del logo</label><input type="color" value="${p.color||"#9b5cff"}" data-i="${i}" data-f="color"><label>Descripción</label><textarea data-i="${i}" data-f="desc">${p.desc}</textarea><label>Precio en soles</label><input value="${p.price}" data-i="${i}" data-f="price"><label><input type="checkbox" ${p.offer?"checked":""} data-i="${i}" data-f="offer"> Marcar como oferta</label><label><input type="checkbox" ${p.active?"checked":""} data-i="${i}" data-f="active"> Mostrar en tienda</label><button class="danger" data-delete="${i}">Eliminar</button></div>`; products.appendChild(div); }); document.querySelectorAll("[data-i]").forEach(el=>{el.oninput=el.onchange=()=>{const f=el.dataset.f; data.products[el.dataset.i][f]=(f==="active"||f==="offer")?el.checked:el.value;};}); document.querySelectorAll("[data-delete]").forEach(btn=>{btn.onclick=()=>{data.products.splice(btn.dataset.delete,1); renderProducts();};}); document.querySelectorAll(".upload").forEach((box,i)=>{const input=box.querySelector("input"); box.onclick=()=>input.click(); input.onchange=()=>{const file=input.files[0]; if(!file)return; const reader=new FileReader(); reader.onload=e=>{data.products[i].image=e.target.result; renderProducts();}; reader.readAsDataURL(file);};}); }
