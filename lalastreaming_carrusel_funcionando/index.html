@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LalaStreaming | Tienda Digital</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <header class="hero">
+    <nav><img src="logo-lalastreaming.png" class="logo" alt="LalaStreaming">
+      <div class="nav-actions">
+        <div class="currency-box"><span class="exchange-badge">🌎 Clientes internacionales</span><button
+            id="currencyBtn" class="currency-btn">💵 Ver precios en USD</button></div><a id="waTop"
+          target="_blank">WhatsApp</a>
+      </div>
+    </nav>
+    <section class="hero-content">
+      <div><span class="badge">Tienda digital segura</span>
+        <h1 id="title">LalaStreaming</h1>
+        <h2 id="subtitle"></h2>
+        <p id="description"></p>
+        <div class="hero-buttons"><a href="#catalogo" class="primary">Ver plataformas</a><a href="#pagos"
+            class="ghost">Métodos de pago</a></div>
+      </div><img src="logo-lalastreaming.png" class="big-logo" alt="LalaStreaming">
+    </section>
+  </header>
+  <main>
+
+    <section class="promo-carousel top-carousel">
+      <div class="carousel-track" id="promoCarousel"></div>
+    </section>
+
+    <section class="featured-offer">
+      <div class="featured-copy">
+        <span>🔥 Oferta destacada</span>
+        <h2>Netflix Premium disponible</h2>
+        <p>Consulta stock, vigencia y entrega inmediata por WhatsApp.</p>
+        <a id="featuredWa" target="_blank">📲 Consultar oferta</a>
+      </div>
+      <img src="imagenes/netflix.png" alt="Oferta Netflix" onerror="this.style.display='none'">
+    </section>
+    <section id="catalogo" class="section">
+      <div class="section-head">
+        <div>
+          <h2>Catálogo por categorías</h2>
+          <p class="muted">Filtra por categoría o busca tu plataforma.</p>
+        </div><input id="search" class="search" placeholder="Buscar plataforma...">
+      </div>
+      <div id="categoryFilters" class="category-filters"></div>
+      <div id="catalogByCategory"></div>
+    </section>
+
+    <section id="pagos" class="payments">
+      <h2>Métodos de pago</h2>
+      <div class="payment-grid">
+        <div class="payment-card yape"><span>Yape</span><strong id="yapeNumber"></strong>
+          <p>Envía captura después del pago.</p>
+        </div>
+        <div class="payment-card plin"><span>Plin</span><strong id="plinNumber"></strong>
+          <p>Confirma disponibilidad antes de pagar.</p>
+        </div>
+      </div>
+    </section>
+    <section class="terms">
+      <h2>Términos y condiciones</h2>
+      <div id="terms"></div>
+    </section>
+  </main>
+
+  <div id="modal" class="modal">
+    <div class="modal-card"><button id="closeModal" class="close">×</button>
+      <div id="mLogo" class="brand-logo"></div><img id="mImg" class="modal-img" alt="">
+      <h2 id="mName"></h2>
+      <p id="mDesc"></p><strong id="mPrice"></strong><a id="mWa" target="_blank">Comprar por WhatsApp</a>
+    </div>
+  </div>
+  <div class="floating-actions"><a id="buyNowFloat" class="buy-now-float" target="_blank">📲 Comprar ahora</a><a
+      id="floatWa" class="float-wa" target="_blank">💬</a></div>
+  <footer>
+    <p>© 2026 LalaStreaming</p><a href="admin.html" class="hidden-admin">Panel</a>
+  </footer>
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+
+</html>

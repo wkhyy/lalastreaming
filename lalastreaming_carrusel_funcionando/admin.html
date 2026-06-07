@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel LalaStreaming</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <section id="login" class="login">
+    <div class="login-card"><img src="logo-lalastreaming.png" class="logo">
+      <h1>Panel privado</h1>
+      <p>Ingresa tu contraseña para editar.</p><input id="pass" type="password" placeholder="Contraseña"><button
+        id="loginBtn" class="primary">Entrar</button>
+    </div>
+  </section>
+
+  <section id="panel" class="admin hidden">
+    <header class="admin-top"><img src="logo-lalastreaming.png" class="logo">
+      <h1>Editor de tienda</h1><a href="index.html" class="primary">Ver tienda</a>
+    </header>
+
+    <main class="admin-grid">
+      <div class="box">
+        <h2>Datos generales</h2><label>Nombre</label><input id="sTitle"><label>Subtítulo</label><input
+          id="sSubtitle"><label>Descripción</label><textarea id="sDescription"></textarea><label>WhatsApp</label><input
+          id="sWhatsapp"><label>Número Yape</label><input id="sYape"><label>Número Plin</label><input
+          id="sPlin"><label>Clientes atendidos</label><input id="sClientsCount" type="number"
+          placeholder="Ejemplo: 250"><label>Tipo de cambio</label><input id="sExchange" type="number"
+          step="0.01"><label>Mensaje WhatsApp automático</label><textarea id="sMsg"></textarea><small>Usa {producto}
+          para cambiar según la plataforma.</small><label>Términos</label><textarea id="sTerms"></textarea><label>Nueva
+          contraseña</label><input id="newPass" placeholder="Opcional"><button id="saveStore"
+          class="primary full">Guardar datos</button>
+      </div>
+
+      <div class="box">
+        <div class="row">
+          <h2>Categorías</h2><button id="addCategory" class="secondary">+ Categoría</button>
+        </div>
+        <div id="categoryEditor"></div><button id="saveCategories" class="primary full">Guardar categorías</button>
+      </div>
+
+      <div class="box">
+        <div class="row">
+          <h2>Banners</h2><button id="addBanner" class="secondary">+ Banner</button>
+        </div>
+        <div id="bannerEditor"></div><button id="saveBanners" class="primary full">Guardar banners</button>
+      </div>
+
+      <div class="box wide">
+        <div class="row">
+          <h2>Plataformas</h2><button id="addProduct" class="secondary">+ Agregar</button>
+        </div>
+        <p class="admin-note">✅ Corrección aplicada: las imágenes ya no se guardan dentro del navegador. Sube tus
+          imágenes a GitHub en la carpeta <b>imagenes</b> y escribe la ruta. Ejemplo: <b>imagenes/netflix.png</b></p>
+        <div id="products"></div><button id="saveProducts" class="primary full">Guardar plataformas</button>
+      </div>
+
+      <div class="box wide">
+        <div class="row">
+          <h2>Control de ventas</h2><button id="exportSales" class="secondary">Exportar CSV</button>
+        </div>
+        <div class="kpis">
+          <div><span>Ventas</span><strong id="kpiSales">0</strong></div>
+          <div><span>Ingresos</span><strong id="kpiIncome">S/ 0.00</strong></div>
+          <div><span>Costos</span><strong id="kpiCost">S/ 0.00</strong></div>
+          <div><span>Ganancia</span><strong id="kpiProfit">S/ 0.00</strong></div>
+        </div>
+        <div class="sales-form">
+          <input id="saleDate" type="date">
+          <input id="saleClient" placeholder="Cliente">
+          <select id="saleProduct"></select>
+          <input id="saleCost" type="number" step="0.01" placeholder="Costo">
+          <input id="salePrice" type="number" step="0.01" placeholder="Venta">
+          <select id="salePayment">
+            <option>Yape</option>
+            <option>Plin</option>
+            <option>Efectivo</option>
+            <option>Otro</option>
+          </select>
+          <select id="saleStatus">
+            <option>Pagado</option>
+            <option>Pendiente</option>
+            <option>Garantía</option>
+          </select>
+          <button id="addSale" class="primary">Agregar venta</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Cliente</th>
+                <th>Categoría</th>
+                <th>Producto</th>
+                <th>Costo</th>
+                <th>Venta</th>
+                <th>Ganancia</th>
+                <th>Pago</th>
+                <th>Estado</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="salesTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </section>
+  <script src="data.js"></script>
+  <script src="admin.js"></script>
+</body>
+
+</html>

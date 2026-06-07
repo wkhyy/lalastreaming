@@ -1,0 +1,2 @@
+Sube aquí tus imágenes. Ejemplo: netflix.png, disney.png, crunchyroll.png
+Luego en admin.html coloca la ruta: imagenes/netflix.png
