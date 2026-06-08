@@ -56,3 +56,17 @@ FIX:
 - Se corrigió el carrusel para que no dependa del bloque eliminado "banners".
 - El carrusel ahora se genera directamente por ID promoCarousel.
 - Se reforzó el CSS de animación scrollPromos.
+
+
+Actualización panel admin:
+- Nuevo diseño organizado tipo dashboard.
+- Menú lateral con secciones.
+- Oferta destacada editable con vista previa.
+- Edición de imagen por ruta: imagenes/nombre.png.
+- Se mantienen productos, categorías, carrusel, ventas y configuración.
+
+
+Corrección carrusel:
+- El carrusel vuelve a generarse desde app.js con ID promoCarousel.
+- Ya no depende de bloques eliminados.
+- Se reforzó el CSS para que se vea y se anime correctamente.

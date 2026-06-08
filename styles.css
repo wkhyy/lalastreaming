@@ -232,3 +232,56 @@
     from{transform:translateX(0);}
     to{transform:translateX(-50%);}
 }
+
+
+/* FIX DEFINITIVO CARRUSEL */
+.top-carousel{
+    margin:25px 7% 10px !important;
+    border-radius:24px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.12);
+    overflow:hidden;
+    display:block !important;
+}
+
+.top-carousel .carousel-track,
+.carousel-track{
+    display:flex !important;
+    gap:14px;
+    width:max-content;
+    padding:14px;
+    animation:scrollPromos 24s linear infinite;
+}
+
+.top-carousel:hover .carousel-track{
+    animation-play-state:paused;
+}
+
+.carousel-item{
+    min-width:300px;
+    padding:18px;
+    border-radius:18px;
+    background:linear-gradient(135deg,rgba(155,92,255,.35),rgba(0,183,255,.20));
+    border:1px solid rgba(255,255,255,.10);
+    color:#fff;
+}
+
+.carousel-item strong{
+    display:block;
+    color:#fff;
+    margin-bottom:6px;
+    font-weight:900;
+}
+
+.carousel-item span{
+    color:#e8e7ff;
+}
+
+.client-slide{
+    background:linear-gradient(135deg,#ffb347,#ff3b6b) !important;
+}
+
+@keyframes scrollPromos{
+    from{transform:translateX(0);}
+    to{transform:translateX(-50%);}
+}

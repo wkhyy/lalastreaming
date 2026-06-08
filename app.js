@@ -10,7 +10,6 @@ description.textContent = store.description;
 waTop.href = `https://wa.me/51${store.whatsapp}`;
 floatWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero información")}`;
 if (typeof buyNowFloat !== "undefined") buyNowFloat.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero comprar una plataforma")}`;
-if (typeof featuredWa !== "undefined") featuredWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero consultar la oferta destacada de Netflix")}`;
 terms.innerHTML = store.terms.split("\n").map(t => `<p>${t}</p>`).join("");
 yapeNumber.textContent = store.yape || store.whatsapp;
 plinNumber.textContent = store.plin || store.whatsapp;
@@ -26,7 +25,13 @@ function renderBanners(){
   if (carousel) {
     carousel.innerHTML = "";
 
-    activeBanners.forEach(b => {
+    const items = activeBanners.length ? activeBanners : [
+      { title:"🔥 Promos de la semana", text:"Consulta combos especiales por WhatsApp" },
+      { title:"🎬 Streaming al mejor precio", text:"Netflix, Disney+, Prime, Max y más" },
+      { title:"💳 Paga fácil", text:"Aceptamos Yape y Plin" }
+    ];
+
+    items.forEach(b => {
       carousel.innerHTML += `
         <div class="carousel-item">
           <strong>${b.title}</strong>
@@ -45,6 +50,7 @@ function renderBanners(){
     carousel.innerHTML += carousel.innerHTML;
   }
 }
+
 function priceText(p){
   const n = soles(p.price);
   return currency === "USD" ? "$ " + (n / (Number(store.exchangeRate) || 3.75)).toFixed(2) : "S/ " + n.toFixed(2);
@@ -101,4 +107,4 @@ currencyBtn.onclick = () => {
   render();
 };
 search.oninput = () => { query = search.value.toLowerCase().trim(); render(); };
-renderBanners(); render();
+renderBanners(); renderFeaturedOffer(); render();

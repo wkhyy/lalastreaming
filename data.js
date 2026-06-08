@@ -10,7 +10,8 @@ const STORE_DEFAULT = {
     yape: "968335649",
     plin: "968335649",
     clientsCount: 250,
-    terms: "🗓️ Vigencia según el servicio contratado.\n🔑 No cambiar datos de acceso ni seguridad.\n🚫 No hay devoluciones después de la entrega.\n🛠️ Soporte durante la vigencia del servicio.\n⚠️ Al recibir el acceso, el cliente acepta estos términos."
+    terms: "🗓️ Vigencia según el servicio contratado.\n🔑 No cambiar datos de acceso ni seguridad.\n🚫 No hay devoluciones después de la entrega.\n🛠️ Soporte durante la vigencia del servicio.\n⚠️ Al recibir el acceso, el cliente acepta estos términos.",
+    featuredOffer: { badge:"🔥 Oferta destacada", title:"Netflix Premium disponible", text:"Consulta stock, vigencia y entrega inmediata por WhatsApp.", image:"imagenes/netflix.png", buttonText:"📲 Consultar oferta", whatsappText:"Hola, quiero consultar la oferta destacada de Netflix Premium. ¿Tienen disponibilidad?" }
   },
   categories: [
     { id: "streaming", name: "Streaming" },
@@ -44,6 +45,7 @@ function loadData(){
   data.banners ||= STORE_DEFAULT.banners;
   data.products ||= STORE_DEFAULT.products;
   data.sales ||= [];
+  data.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
   return data;
 }
 function saveData(data){ localStorage.setItem("lalastreaming_pro_data", JSON.stringify(data)); }
