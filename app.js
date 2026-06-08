@@ -1,8 +1,8 @@
-let data = loadData();
+const data = loadData();
 let currency = "PEN";
 let query = "";
 let selectedCategory = "all";
-let store = data.store;
+const store = data.store;
 
 title.textContent = store.title;
 subtitle.textContent = store.subtitle;
@@ -10,6 +10,7 @@ description.textContent = store.description;
 waTop.href = `https://wa.me/51${store.whatsapp}`;
 floatWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero información")}`;
 if (typeof buyNowFloat !== "undefined") buyNowFloat.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero comprar una plataforma")}`;
+if (typeof featuredWa !== "undefined") featuredWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero consultar la oferta destacada de Netflix")}`;
 terms.innerHTML = store.terms.split("\n").map(t => `<p>${t}</p>`).join("");
 yapeNumber.textContent = store.yape || store.whatsapp;
 plinNumber.textContent = store.plin || store.whatsapp;
@@ -25,13 +26,7 @@ function renderBanners(){
   if (carousel) {
     carousel.innerHTML = "";
 
-    const items = activeBanners.length ? activeBanners : [
-      { title:"🔥 Promos de la semana", text:"Consulta combos especiales por WhatsApp" },
-      { title:"🎬 Streaming al mejor precio", text:"Netflix, Disney+, Prime, Max y más" },
-      { title:"💳 Paga fácil", text:"Aceptamos Yape y Plin" }
-    ];
-
-    items.forEach(b => {
+    activeBanners.forEach(b => {
       carousel.innerHTML += `
         <div class="carousel-item">
           <strong>${b.title}</strong>
@@ -50,37 +45,6 @@ function renderBanners(){
     carousel.innerHTML += carousel.innerHTML;
   }
 }
-
-function renderFeaturedOffer(){
-  const offer = store.featuredOffer || {};
-  const badge = offer.badge || "🔥 Oferta destacada";
-  const title = offer.title || "Oferta destacada";
-  const text = offer.text || "";
-  const image = offer.image || "";
-  const buttonText = offer.buttonText || "📲 Consultar oferta";
-  const whatsappText = offer.whatsappText || "Hola, quiero consultar la oferta destacada";
-
-  const badgeEl = document.getElementById("featuredBadge");
-  const titleEl = document.getElementById("featuredTitle");
-  const textEl = document.getElementById("featuredText");
-  const imageEl = document.getElementById("featuredImage");
-  const waEl = document.getElementById("featuredWa");
-
-  if (badgeEl) badgeEl.textContent = badge;
-  if (titleEl) titleEl.textContent = title;
-  if (textEl) textEl.textContent = text;
-
-  if (imageEl) {
-    imageEl.src = image;
-    imageEl.style.display = image ? "block" : "none";
-  }
-
-  if (waEl) {
-    waEl.textContent = buttonText;
-    waEl.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent(whatsappText)}`;
-  }
-}
-
 function priceText(p){
   const n = soles(p.price);
   return currency === "USD" ? "$ " + (n / (Number(store.exchangeRate) || 3.75)).toFixed(2) : "S/ " + n.toFixed(2);
@@ -137,27 +101,4 @@ currencyBtn.onclick = () => {
   render();
 };
 search.oninput = () => { query = search.value.toLowerCase().trim(); render(); };
-renderBanners(); renderFeaturedOffer(); render();
-
-
-// Cargar datos desde Firebase y actualizar la tienda para todos
-if (typeof loadDataFromFirebase === "function" && isFirebaseConfigured()){
-  loadDataFromFirebase().then(cloudData => {
-    data = cloudData;
-    store = data.store;
-
-    title.textContent = store.title;
-    subtitle.textContent = store.subtitle;
-    description.textContent = store.description;
-    waTop.href = `https://wa.me/51${store.whatsapp}`;
-    floatWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero información")}`;
-    if (typeof buyNowFloat !== "undefined") buyNowFloat.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero comprar una plataforma")}`;
-    terms.innerHTML = store.terms.split("\n").map(t => `<p>${t}</p>`).join("");
-    yapeNumber.textContent = store.yape || store.whatsapp;
-    plinNumber.textContent = store.plin || store.whatsapp;
-
-    renderBanners();
-    if (typeof renderFeaturedOffer === "function") renderFeaturedOffer();
-    render();
-  });
-}
+renderBanners(); render();

@@ -1,293 +1,43 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel LalaStreaming</title>
-<link rel="stylesheet" href="styles.css">
-<style>
-:root{
-  --admin-bg:#070817;
-  --admin-panel:#0f1428;
-  --admin-card:#12182e;
-  --admin-border:rgba(255,255,255,.12);
-  --admin-text:#ffffff;
-  --admin-muted:#aeb4c8;
-  --admin-pink:#ff2b7a;
-  --admin-orange:#ff9f1c;
-  --admin-blue:#2f80ff;
-}
-body.admin-body{background:var(--admin-bg);color:var(--admin-text);min-height:100vh}
-.admin-shell{display:grid;grid-template-columns:280px 1fr;min-height:100vh;background:radial-gradient(circle at top right,rgba(47,128,255,.16),transparent 35%),linear-gradient(135deg,#070817,#090b1f)}
-.admin-sidebar{border-right:1px solid var(--admin-border);background:rgba(6,9,24,.78);backdrop-filter:blur(12px);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
-.admin-brand{padding:28px 22px;border-bottom:1px solid var(--admin-border);display:flex;align-items:center;gap:14px}
-.admin-brand img{width:54px;height:54px;object-fit:contain}
-.admin-brand h2{font-size:24px;line-height:1;margin:0}
-.admin-brand span{color:var(--admin-muted);font-size:13px}
-.admin-menu{padding:22px 16px;display:flex;flex-direction:column;gap:8px}
-.menu-title{font-size:12px;color:var(--admin-pink);letter-spacing:.08em;margin:10px 8px 8px;font-weight:800}
-.nav-item{border:1px solid transparent;background:transparent;color:#e9ecff;padding:14px 16px;border-radius:14px;text-align:left;cursor:pointer;font-weight:700;display:flex;align-items:center;gap:12px;font-size:15px}
-.nav-item:hover,.nav-item.active{background:linear-gradient(135deg,rgba(255,43,122,.26),rgba(255,159,28,.12));border-color:rgba(255,43,122,.55);box-shadow:0 12px 28px rgba(255,43,122,.12)}
-.sidebar-card{margin:auto 16px 18px;padding:18px;border:1px solid var(--admin-border);border-radius:16px;background:rgba(255,255,255,.05);color:#dfe3f7}
-.sidebar-card strong{display:block;margin-bottom:8px}
-.admin-content{padding:32px;overflow:auto}
-.admin-head{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:28px}
-.admin-head h1{font-size:clamp(30px,4vw,44px);margin:0}
-.admin-head p{color:var(--admin-muted);font-size:17px;margin-top:6px}
-.admin-section{display:none}
-.admin-section.active{display:block}
-.admin-layout{display:grid;grid-template-columns:minmax(360px,520px) 1fr;gap:24px;align-items:start}
-.admin-card{background:linear-gradient(145deg,rgba(18,24,46,.96),rgba(8,13,30,.96));border:1px solid var(--admin-border);border-radius:18px;padding:24px;box-shadow:0 18px 50px rgba(0,0,0,.22)}
-.admin-card h2,.admin-card h3{margin:0 0 18px;color:#fff}
-.admin-card h2 span,.admin-card h3 span{color:var(--admin-pink)}
-.admin-card label{display:block;margin:16px 0 8px;color:#fff;font-weight:700}
-.admin-card input,.admin-card textarea,.admin-card select{
-  width:100%;background:rgba(255,255,255,.07);border:1px solid var(--admin-border);
-  color:white;border-radius:12px;padding:13px 14px;outline:none;font-size:15px
-}
-.admin-card textarea{min-height:88px;resize:vertical}
-.admin-card small{color:var(--admin-muted);display:block;margin-top:7px}
-.admin-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
-.admin-save,.admin-secondary,.admin-danger{
-  border:0;border-radius:13px;padding:13px 18px;font-weight:800;color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px
-}
-.admin-save{background:linear-gradient(135deg,var(--admin-pink),var(--admin-orange));box-shadow:0 12px 28px rgba(255,43,122,.25)}
-.admin-secondary{background:rgba(255,255,255,.10);border:1px solid var(--admin-border)}
-.admin-danger{background:#ff3b6b}
-.preview-card{position:sticky;top:24px}
-.offer-preview{
-  display:grid;grid-template-columns:.85fr 1fr;min-height:260px;border-radius:24px;overflow:hidden;border:1px solid rgba(255,255,255,.15);
-  background:#090909
-}
-.offer-preview-copy{padding:34px;background:linear-gradient(135deg,rgba(255,43,122,.34),rgba(70,0,20,.72))}
-.offer-preview-copy span{display:inline-block;background:var(--admin-pink);padding:8px 14px;border-radius:22px;font-weight:900;margin-bottom:16px}
-.offer-preview-copy h2{font-size:clamp(28px,4vw,48px);line-height:1.12;margin:0 0 14px}
-.offer-preview-copy p{color:#fff;margin-bottom:24px;line-height:1.45}
-.offer-preview-copy a{background:linear-gradient(135deg,var(--admin-pink),var(--admin-orange));padding:12px 18px;border-radius:28px;color:white;text-decoration:none;font-weight:900;display:inline-block}
-.offer-preview img{width:100%;height:100%;object-fit:cover}
-.image-row{display:grid;grid-template-columns:180px 1fr;gap:18px;align-items:center;margin-top:10px}
-.image-preview{height:140px;border-radius:14px;overflow:hidden;background:rgba(255,255,255,.06);border:1px solid var(--admin-border);display:grid;place-items:center;color:var(--admin-muted)}
-.image-preview img{width:100%;height:100%;object-fit:cover}
-.info-box{margin-top:18px;border:1px solid rgba(47,128,255,.45);background:rgba(47,128,255,.08);padding:18px;border-radius:16px;color:#dce9ff}
-.info-box ul{margin:10px 0 0 18px;color:#dce9ff;line-height:1.8}
-.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-.editor-list{display:grid;gap:14px}
-.edit-banner,.edit-product{background:rgba(255,255,255,.05);border:1px solid var(--admin-border);border-radius:16px;padding:16px;margin-bottom:14px}
-.edit-product{display:grid;grid-template-columns:180px 1fr;gap:16px}
-.upload{border:1px dashed rgba(255,255,255,.25);border-radius:14px;min-height:150px;display:grid;place-items:center;overflow:hidden;color:var(--admin-muted)}
-.upload img{width:100%;height:100%;object-fit:cover}
-.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.kpis div{background:rgba(255,255,255,.06);border:1px solid var(--admin-border);border-radius:16px;padding:18px}
-.kpis span{display:block;color:var(--admin-muted);margin-bottom:6px}
-.kpis strong{font-size:25px;color:#7ddcff}
-.sales-form{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.table-wrap{overflow:auto;margin-top:20px}
-table{width:100%;border-collapse:collapse;min-width:900px}
-th,td{padding:12px;border-bottom:1px solid rgba(255,255,255,.1);text-align:left}
-th{color:#7ddcff}
-.mini-danger{background:#ff3b6b;border:0;color:white;border-radius:10px;padding:7px 10px;cursor:pointer;font-weight:900}
-.login{min-height:100vh;display:grid;place-items:center;background:radial-gradient(circle at top left,rgba(255,43,122,.22),transparent 34%),linear-gradient(135deg,#080716,#111831)}
-.login-card{width:min(410px,92vw);background:rgba(255,255,255,.08);border:1px solid var(--admin-border);border-radius:24px;padding:30px;text-align:center}
-.login-card .logo{width:150px;margin-bottom:18px}
-.hidden{display:none!important}
-.full{width:100%;justify-content:center}
-@media(max-width:1100px){.admin-shell{grid-template-columns:1fr}.admin-sidebar{position:relative;height:auto}.admin-menu{display:grid;grid-template-columns:repeat(2,1fr)}.sidebar-card{display:none}.admin-layout,.grid-2{grid-template-columns:1fr}.preview-card{position:relative;top:0}.sales-form,.kpis{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:620px){.admin-content{padding:18px}.admin-head{flex-direction:column;align-items:flex-start}.admin-menu{grid-template-columns:1fr}.offer-preview,.edit-product,.image-row,.sales-form,.kpis{grid-template-columns:1fr}.offer-preview img{min-height:220px}}
-</style>
-</head>
-<body class="admin-body">
+<!DOCTYPE html><html lang="es"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Panel LalaStreaming</title><link rel="stylesheet" href="styles.css"></head><body>
+<section id="login" class="login"><div class="login-card"><img src="logo-lalastreaming.png" class="logo"><h1>Panel privado</h1><p>Ingresa tu contraseña para editar.</p><input id="pass" type="password" placeholder="Contraseña"><button id="loginBtn" class="primary">Entrar</button><small>Contraseña inicial: 123456</small></div></section>
 
-<section id="login" class="login">
-  <div class="login-card">
-    <img src="logo-lalastreaming.png" class="logo" alt="LalaStreaming">
-    <h1>Panel privado</h1>
-    <p>Ingresa tu contraseña para editar tu tienda.</p>
-    <input id="pass" type="password" placeholder="Contraseña">
-    <button id="loginBtn" class="admin-save full" style="margin-top:15px">Entrar</button>
+<section id="panel" class="admin hidden">
+<header class="admin-top"><img src="logo-lalastreaming.png" class="logo"><h1>Editor de tienda</h1><a href="index.html" class="primary">Ver tienda</a></header>
+
+<main class="admin-grid">
+<div class="box"><h2>Datos generales</h2><label>Nombre</label><input id="sTitle"><label>Subtítulo</label><input id="sSubtitle"><label>Descripción</label><textarea id="sDescription"></textarea><label>WhatsApp</label><input id="sWhatsapp"><label>Número Yape</label><input id="sYape"><label>Número Plin</label><input id="sPlin"><label>Clientes atendidos</label><input id="sClientsCount" type="number" placeholder="Ejemplo: 250"><label>Tipo de cambio</label><input id="sExchange" type="number" step="0.01"><label>Mensaje WhatsApp automático</label><textarea id="sMsg"></textarea><small>Usa {producto} para cambiar según la plataforma.</small><label>Términos</label><textarea id="sTerms"></textarea><label>Nueva contraseña</label><input id="newPass" placeholder="Opcional"><button id="saveStore" class="primary full">Guardar datos</button></div>
+
+<div class="box"><div class="row"><h2>Categorías</h2><button id="addCategory" class="secondary">+ Categoría</button></div><div id="categoryEditor"></div><button id="saveCategories" class="primary full">Guardar categorías</button></div>
+
+<div class="box"><div class="row"><h2>Banners</h2><button id="addBanner" class="secondary">+ Banner</button></div><div id="bannerEditor"></div><button id="saveBanners" class="primary full">Guardar banners</button></div>
+
+<div class="box wide"><div class="row"><h2>Plataformas</h2><button id="addProduct" class="secondary">+ Agregar</button></div><p class="admin-note">✅ Corrección aplicada: las imágenes ya no se guardan dentro del navegador. Sube tus imágenes a GitHub en la carpeta <b>imagenes</b> y escribe la ruta. Ejemplo: <b>imagenes/netflix.png</b></p><div id="products"></div><button id="saveProducts" class="primary full">Guardar plataformas</button></div>
+
+<div class="box wide"><div class="row"><h2>Control de ventas</h2><button id="exportSales" class="secondary">Exportar CSV</button></div>
+  <div class="kpis"><div><span>Ventas</span><strong id="kpiSales">0</strong></div><div><span>Ingresos</span><strong id="kpiIncome">S/ 0.00</strong></div><div><span>Costos</span><strong id="kpiCost">S/ 0.00</strong></div><div><span>Ganancia</span><strong id="kpiProfit">S/ 0.00</strong></div></div>
+  <div class="sales-form">
+    <input id="saleDate" type="date">
+    <input id="saleClient" placeholder="Cliente">
+    <select id="saleProduct"></select>
+    <input id="saleCost" type="number" step="0.01" placeholder="Costo">
+    <input id="salePrice" type="number" step="0.01" placeholder="Venta">
+    <select id="salePayment"><option>Yape</option><option>Plin</option><option>Efectivo</option><option>Otro</option></select>
+    <select id="saleStatus"><option>Pagado</option><option>Pendiente</option><option>Garantía</option></select>
+    <button id="addSale" class="primary">Agregar venta</button>
   </div>
-</section>
-
-<section id="panel" class="admin-shell hidden">
-  <aside class="admin-sidebar">
-    <div class="admin-brand">
-      <img src="logo-lalastreaming.png" alt="LalaStreaming">
-      <div>
-        <h2>LALA</h2>
-        <strong>STREAMING</strong><br>
-        <span>Panel de administración</span>
-      </div>
-    </div>
-
-    <nav class="admin-menu">
-      <div class="menu-title">PANEL DE ADMINISTRACIÓN</div>
-      <button class="nav-item active" data-section="sec-home">🏠 Inicio</button>
-      <button class="nav-item" data-section="sec-featured">⭐ Oferta destacada</button>
-      <button class="nav-item" data-section="sec-products">▦ Productos</button>
-      <button class="nav-item" data-section="sec-categories">📁 Categorías</button>
-      <button class="nav-item" data-section="sec-banners">🎞️ Carrusel</button>
-      <button class="nav-item" data-section="sec-sales">🧾 Ventas</button>
-      <button class="nav-item" data-section="sec-settings">⚙️ Configuración</button>
-    </nav>
-
-    <div class="sidebar-card">
-      <strong>👑 LalaStreaming</strong>
-      <span>Tu tienda de streaming online</span>
-    </div>
-  </aside>
-
-  <main class="admin-content">
-    <div class="admin-head">
-      <div>
-        <h1 id="sectionTitle">Inicio</h1>
-        <p id="sectionSubtitle">Administra tu tienda desde un solo panel.</p>
-      </div>
-      <a href="index.html" class="admin-save" target="_blank">Ver tienda ↗</a>
-    </div>
-
-    <section id="sec-home" class="admin-section active">
-      <div class="kpis">
-        <div><span>Ventas</span><strong id="kpiSalesHome">0</strong></div>
-        <div><span>Ingresos</span><strong id="kpiIncomeHome">S/ 0.00</strong></div>
-        <div><span>Ganancia</span><strong id="kpiProfitHome">S/ 0.00</strong></div>
-        <div><span>Clientes atendidos</span><strong id="kpiClientsHome">+250</strong></div>
-      </div>
-      <div class="admin-card">
-        <h2>Bienvenido al panel</h2>
-        <p style="color:var(--admin-muted);line-height:1.7">Desde aquí puedes editar la oferta destacada, productos, categorías, carrusel, datos de pago y ventas.</p>
-      </div>
-    </section>
-
-    <section id="sec-featured" class="admin-section">
-      <div class="admin-layout">
-        <div class="admin-card">
-          <h2><span>⭐</span> Editar oferta destacada</h2>
-          <label>Etiqueta</label><input id="fBadge" placeholder="🔥 Oferta destacada">
-          <label>Título</label><input id="fTitle" placeholder="Netflix Premium disponible">
-          <label>Descripción</label><textarea id="fText"></textarea>
-          <label>Texto del botón</label><input id="fButtonText" placeholder="📲 Consultar oferta">
-          <label>Mensaje de WhatsApp</label><textarea id="fWhatsappText"></textarea>
-          <label>Ruta de imagen</label><input id="fImage" placeholder="imagenes/netflix.png">
-          <small>Sube la imagen a GitHub dentro de la carpeta <b>imagenes</b> y coloca aquí la ruta.</small>
-
-          <div class="image-row">
-            <div class="image-preview"><img id="featuredAdminImage" src="" alt="Imagen actual" onerror="this.style.display='none'"></div>
-            <div class="info-box">
-              <strong>Recomendaciones para la imagen</strong>
-              <ul>
-                <li>Formato: JPG, PNG o WEBP</li>
-                <li>Tamaño recomendado: 1200x600px</li>
-                <li>Ruta ejemplo: imagenes/netflix.png</li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="admin-actions">
-            <button id="saveFeatured" class="admin-save full">💾 Guardar cambios</button>
-          </div>
-        </div>
-
-        <div class="admin-card preview-card">
-          <h2><span>👁️</span> Vista previa</h2>
-          <div class="offer-preview">
-            <div class="offer-preview-copy">
-              <span id="previewBadge">🔥 Oferta destacada</span>
-              <h2 id="previewTitle">Netflix Premium disponible</h2>
-              <p id="previewText">Consulta stock, vigencia y entrega inmediata por WhatsApp.</p>
-              <a id="previewButton">📲 Consultar oferta</a>
-            </div>
-            <img id="previewImage" src="imagenes/netflix.png" alt="Vista previa" onerror="this.style.display='none'">
-          </div>
-          <div class="info-box">
-            <strong>Información</strong>
-            <ul>
-              <li>El botón abrirá WhatsApp con el mensaje configurado.</li>
-              <li>Los cambios se verán en la página principal.</li>
-              <li>Usa textos cortos para que se vea profesional.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="sec-products" class="admin-section">
-      <div class="admin-card">
-        <div class="admin-head" style="padding:0;margin-bottom:16px"><h2>Productos</h2><button id="addProduct" class="admin-secondary">+ Agregar</button></div>
-        <p class="info-box">Las imágenes no se guardan dentro del navegador. Sube tus imágenes a GitHub en la carpeta <b>imagenes</b> y escribe la ruta. Ejemplo: <b>imagenes/netflix.png</b></p>
-        <div id="products"></div>
-        <button id="saveProducts" class="admin-save full">Guardar plataformas</button>
-      </div>
-    </section>
-
-    <section id="sec-categories" class="admin-section">
-      <div class="grid-2">
-        <div class="admin-card">
-          <div class="admin-head" style="padding:0;margin-bottom:16px"><h2>Categorías</h2><button id="addCategory" class="admin-secondary">+ Categoría</button></div>
-          <div id="categoryEditor"></div>
-          <button id="saveCategories" class="admin-save full">Guardar categorías</button>
-        </div>
-      </div>
-    </section>
-
-    <section id="sec-banners" class="admin-section">
-      <div class="admin-card">
-        <div class="admin-head" style="padding:0;margin-bottom:16px"><h2>Carrusel / Banners</h2><button id="addBanner" class="admin-secondary">+ Banner</button></div>
-        <div id="bannerEditor"></div>
-        <button id="saveBanners" class="admin-save full">Guardar banners</button>
-      </div>
-    </section>
-
-    <section id="sec-sales" class="admin-section">
-      <div class="admin-card">
-        <div class="admin-head" style="padding:0;margin-bottom:16px"><h2>Control de ventas</h2><button id="exportSales" class="admin-secondary">Exportar CSV</button></div>
-        <div class="kpis">
-          <div><span>Ventas</span><strong id="kpiSales">0</strong></div>
-          <div><span>Ingresos</span><strong id="kpiIncome">S/ 0.00</strong></div>
-          <div><span>Costos</span><strong id="kpiCost">S/ 0.00</strong></div>
-          <div><span>Ganancia</span><strong id="kpiProfit">S/ 0.00</strong></div>
-        </div>
-        <div class="sales-form">
-          <input id="saleDate" type="date">
-          <input id="saleClient" placeholder="Cliente">
-          <select id="saleProduct"></select>
-          <input id="saleCost" type="number" step="0.01" placeholder="Costo">
-          <input id="salePrice" type="number" step="0.01" placeholder="Venta">
-          <select id="salePayment"><option>Yape</option><option>Plin</option><option>Efectivo</option><option>Otro</option></select>
-          <select id="saleStatus"><option>Pagado</option><option>Pendiente</option><option>Garantía</option></select>
-          <button id="addSale" class="admin-save">Agregar venta</button>
-        </div>
-        <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Producto</th><th>Costo</th><th>Venta</th><th>Ganancia</th><th>Pago</th><th>Estado</th><th></th></tr></thead><tbody id="salesTable"></tbody></table></div>
-      </div>
-    </section>
-
-    <section id="sec-settings" class="admin-section">
-      <div class="admin-card">
-        <h2>Configuración general</h2>
-        <div class="grid-2">
-          <div><label>Nombre</label><input id="sTitle"></div>
-          <div><label>Subtítulo</label><input id="sSubtitle"></div>
-        </div>
-        <label>Descripción</label><textarea id="sDescription"></textarea>
-        <div class="grid-2">
-          <div><label>WhatsApp</label><input id="sWhatsapp"></div>
-          <div><label>Tipo de cambio</label><input id="sExchange" type="number" step="0.01"></div>
-          <div><label>Número Yape</label><input id="sYape"></div>
-          <div><label>Número Plin</label><input id="sPlin"></div>
-          <div><label>Clientes atendidos</label><input id="sClientsCount" type="number" placeholder="Ejemplo: 250"></div>
-          <div><label>Nueva contraseña</label><input id="newPass" placeholder="Opcional"></div>
-        </div>
-        <label>Mensaje WhatsApp automático</label><textarea id="sMsg"></textarea>
-        <small>Usa {producto} para cambiar según la plataforma.</small>
-        <label>Términos</label><textarea id="sTerms"></textarea>
-        <button id="saveStore" class="admin-save full">Guardar datos</button>
-      </div>
-    </section>
-  </main>
-</section>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.5/firebase-database-compat.js"></script>
-<script src="firebase-config.js"></script>
-<script src="data.js"></script>
-<script src="admin.js"></script>
-</body>
-</html>
+  <div class="table-wrap"><table><thead><tr><th>Fecha</th><th>Cliente</th><th>Categoría</th><th>Producto</th><th>Costo</th><th>Venta</th><th>Ganancia</th><th>Pago</th><th>Estado</th><th></th></tr></thead><tbody id="salesTable"></tbody></table></div>
+</div>
+</main></section>
+<script src="data.js"></script><script src="admin.js"></script></body></html>
+<div class="box">
+<h2>Oferta destacada</h2>
+<label>Etiqueta</label><input id="fBadge">
+<label>Título</label><input id="fTitle">
+<label>Descripción</label><textarea id="fText"></textarea>
+<label>Ruta de imagen</label><input id="fImage">
+<label>Texto botón</label><input id="fButtonText">
+<label>Mensaje WhatsApp</label><textarea id="fWhatsappText"></textarea>
+<button id="saveFeatured" class="primary">Guardar oferta destacada</button>
+</div>

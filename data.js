@@ -10,8 +10,7 @@ const STORE_DEFAULT = {
     yape: "968335649",
     plin: "968335649",
     clientsCount: 250,
-    terms: "🗓️ Vigencia según el servicio contratado.\n🔑 No cambiar datos de acceso ni seguridad.\n🚫 No hay devoluciones después de la entrega.\n🛠️ Soporte durante la vigencia del servicio.\n⚠️ Al recibir el acceso, el cliente acepta estos términos.",
-    featuredOffer: { badge:"🔥 Oferta destacada", title:"Netflix Premium disponible", text:"Consulta stock, vigencia y entrega inmediata por WhatsApp.", image:"imagenes/netflix.png", buttonText:"📲 Consultar oferta", whatsappText:"Hola, quiero consultar la oferta destacada de Netflix Premium. ¿Tienen disponibilidad?" }
+    terms: "🗓️ Vigencia según el servicio contratado.\n🔑 No cambiar datos de acceso ni seguridad.\n🚫 No hay devoluciones después de la entrega.\n🛠️ Soporte durante la vigencia del servicio.\n⚠️ Al recibir el acceso, el cliente acepta estos términos."
   },
   categories: [
     { id: "streaming", name: "Streaming" },
@@ -40,95 +39,14 @@ const STORE_DEFAULT = {
 function loadData(){
   const saved = localStorage.getItem("lalastreaming_pro_data");
   if (!saved) return structuredClone(STORE_DEFAULT);
-
-  try {
-    const data = JSON.parse(saved);
-    data.store ||= STORE_DEFAULT.store;
-    data.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
-    data.categories ||= STORE_DEFAULT.categories;
-    data.banners ||= STORE_DEFAULT.banners;
-    data.products ||= STORE_DEFAULT.products;
-    data.sales ||= [];
-    return data;
-  } catch (error) {
-    console.error("Error cargando datos locales:", error);
-    return structuredClone(STORE_DEFAULT);
-  }
+  const data = JSON.parse(saved);
+  data.categories ||= STORE_DEFAULT.categories;
+  data.banners ||= STORE_DEFAULT.banners;
+  data.products ||= STORE_DEFAULT.products;
+  data.sales ||= [];
+  return data;
 }
 function saveData(data){ localStorage.setItem("lalastreaming_pro_data", JSON.stringify(data)); }
 function soles(price){ const n = parseFloat(String(price).replace(",", ".")); return Number.isFinite(n) ? n : 0; }
 function money(n){ return "S/ " + (Number(n) || 0).toFixed(2); }
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
-
-
-
-/* =========================
-   FIREBASE SYNC - LALASTREAMING
-   ========================= */
-
-function isFirebaseConfigured(){
-  return typeof firebaseConfig !== "undefined"
-    && firebaseConfig.apiKey
-    && !firebaseConfig.apiKey.includes("PEGA_AQUI")
-    && firebaseConfig.databaseURL
-    && !firebaseConfig.databaseURL.includes("PEGA_AQUI");
-}
-
-function initFirebaseApp(){
-  if (!isFirebaseConfigured()) return null;
-
-  try{
-    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-    return firebase.database().ref(FIREBASE_STORE_PATH || "lalastreaming/storeData");
-  }catch(error){
-    console.error("Firebase no pudo iniciar:", error);
-    return null;
-  }
-}
-
-async function loadDataFromFirebase(){
-  const ref = initFirebaseApp();
-  if (!ref) return loadData();
-
-  try{
-    const snapshot = await ref.get();
-    if (snapshot.exists()){
-      const cloudData = snapshot.val();
-      cloudData.store ||= STORE_DEFAULT.store;
-      cloudData.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
-      cloudData.categories ||= STORE_DEFAULT.categories;
-      cloudData.banners ||= STORE_DEFAULT.banners;
-      cloudData.products ||= STORE_DEFAULT.products;
-      cloudData.sales ||= [];
-      localStorage.setItem("lalastreaming_pro_data", JSON.stringify(cloudData));
-      return cloudData;
-    }
-
-    const localData = loadData();
-    await ref.set(localData);
-    return localData;
-  }catch(error){
-    console.error("Error leyendo Firebase:", error);
-    return loadData();
-  }
-}
-
-async function saveDataToFirebase(data){
-  const ref = initFirebaseApp();
-  if (!ref) return false;
-
-  try{
-    await ref.set(data);
-    return true;
-  }catch(error){
-    console.error("Error guardando Firebase:", error);
-    return false;
-  }
-}
-
-// Sobrescribe el guardado antiguo: guarda local + nube
-const saveDataLocalOnly = saveData;
-saveData = function(data){
-  localStorage.setItem("lalastreaming_pro_data", JSON.stringify(data));
-  saveDataToFirebase(data);
-};
