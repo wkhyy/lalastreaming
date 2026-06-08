@@ -17,5 +17,4 @@ const firebaseConfig = {
 
 const FIREBASE_STORE_PATH = "lalastreaming/storeData";
 
-// Ruta donde se guardarán los datos de tu tienda
-const FIREBASE_STORE_PATH = "lalastreaming/storeData";
+
