@@ -76,3 +76,64 @@ Bugfix:
 - Se corrigió que al editar la oferta destacada desaparezcan/no se vean los productos.
 - La oferta destacada ahora sí cambia texto, botón, mensaje e imagen.
 - Se quitó la pausa del carrusel al pasar el cursor; siempre seguirá en movimiento.
+
+FIX: Se corrigió renderFeaturedOffer no definido y el carrusel siempre en movimiento.
+
+
+==============================
+🔥 FIREBASE ACTIVADO
+==============================
+
+Esta versión permite que los cambios del panel admin se guarden en la nube y todos los clientes vean los cambios al abrir el link.
+
+ARCHIVOS NUEVOS / MODIFICADOS:
+- firebase-config.js
+- data.js
+- app.js
+- admin.js
+- index.html
+- admin.html
+
+PASOS PARA CONFIGURAR FIREBASE:
+
+1. Entra a Firebase:
+   https://console.firebase.google.com/
+
+2. Crea un proyecto nuevo:
+   LalaStreaming
+
+3. Agrega una app Web:
+   </>
+
+4. Copia el objeto firebaseConfig.
+
+5. Abre el archivo:
+   firebase-config.js
+
+6. Reemplaza los datos:
+   apiKey, authDomain, databaseURL, projectId, storageBucket, messagingSenderId, appId
+
+7. En Firebase, entra a:
+   Build > Realtime Database
+
+8. Crea la base de datos en modo prueba.
+
+9. Reglas temporales para probar:
+
+{
+  "rules": {
+    ".read": true,
+    ".write": true
+  }
+}
+
+10. Sube estos archivos a GitHub:
+   - firebase-config.js
+   - data.js
+   - app.js
+   - admin.js
+   - index.html
+   - admin.html
+
+IMPORTANTE:
+Estas reglas son abiertas para empezar rápido. Luego conviene proteger el panel con Firebase Auth o reglas más seguras.

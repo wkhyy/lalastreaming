@@ -10,7 +10,12 @@ const sectionTitles = {
   "sec-settings": ["Configuración", "Edita datos generales, pagos, WhatsApp y contraseña."]
 };
 
-loginBtn.onclick = () => {
+loginBtn.onclick = async () => {
+  // Primero cargamos datos de la nube si Firebase está configurado
+  if (typeof loadDataFromFirebase === "function" && isFirebaseConfigured()){
+    data = await loadDataFromFirebase();
+  }
+
   if (pass.value === data.password) {
     login.classList.add("hidden");
     panel.classList.remove("hidden");
@@ -39,11 +44,11 @@ function catName(id){
 function safeSave(msg="Guardado ✅"){
   try{
     saveData(data);
-    alert(msg);
+    alert(msg + (isFirebaseConfigured() ? " en la nube" : " localmente"));
     renderHomeKpis();
   }catch(e){
     console.error(e);
-    alert("No se pudo guardar. Si subiste imágenes pesadas antes, ejecuta localStorage.clear() en consola y vuelve a configurar.");
+    alert("No se pudo guardar. Revisa Firebase o ejecuta localStorage.clear() si antes guardaste imágenes pesadas.");
   }
 }
 

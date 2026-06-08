@@ -59,3 +59,76 @@ function saveData(data){ localStorage.setItem("lalastreaming_pro_data", JSON.str
 function soles(price){ const n = parseFloat(String(price).replace(",", ".")); return Number.isFinite(n) ? n : 0; }
 function money(n){ return "S/ " + (Number(n) || 0).toFixed(2); }
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2, 7); }
+
+
+
+/* =========================
+   FIREBASE SYNC - LALASTREAMING
+   ========================= */
+
+function isFirebaseConfigured(){
+  return typeof firebaseConfig !== "undefined"
+    && firebaseConfig.apiKey
+    && !firebaseConfig.apiKey.includes("PEGA_AQUI")
+    && firebaseConfig.databaseURL
+    && !firebaseConfig.databaseURL.includes("PEGA_AQUI");
+}
+
+function initFirebaseApp(){
+  if (!isFirebaseConfigured()) return null;
+
+  try{
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
+    return firebase.database().ref(FIREBASE_STORE_PATH || "lalastreaming/storeData");
+  }catch(error){
+    console.error("Firebase no pudo iniciar:", error);
+    return null;
+  }
+}
+
+async function loadDataFromFirebase(){
+  const ref = initFirebaseApp();
+  if (!ref) return loadData();
+
+  try{
+    const snapshot = await ref.get();
+    if (snapshot.exists()){
+      const cloudData = snapshot.val();
+      cloudData.store ||= STORE_DEFAULT.store;
+      cloudData.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
+      cloudData.categories ||= STORE_DEFAULT.categories;
+      cloudData.banners ||= STORE_DEFAULT.banners;
+      cloudData.products ||= STORE_DEFAULT.products;
+      cloudData.sales ||= [];
+      localStorage.setItem("lalastreaming_pro_data", JSON.stringify(cloudData));
+      return cloudData;
+    }
+
+    const localData = loadData();
+    await ref.set(localData);
+    return localData;
+  }catch(error){
+    console.error("Error leyendo Firebase:", error);
+    return loadData();
+  }
+}
+
+async function saveDataToFirebase(data){
+  const ref = initFirebaseApp();
+  if (!ref) return false;
+
+  try{
+    await ref.set(data);
+    return true;
+  }catch(error){
+    console.error("Error guardando Firebase:", error);
+    return false;
+  }
+}
+
+// Sobrescribe el guardado antiguo: guarda local + nube
+const saveDataLocalOnly = saveData;
+saveData = function(data){
+  localStorage.setItem("lalastreaming_pro_data", JSON.stringify(data));
+  saveDataToFirebase(data);
+};

@@ -1,8 +1,8 @@
-const data = loadData();
+let data = loadData();
 let currency = "PEN";
 let query = "";
 let selectedCategory = "all";
-const store = data.store;
+let store = data.store;
 
 title.textContent = store.title;
 subtitle.textContent = store.subtitle;
@@ -138,3 +138,26 @@ currencyBtn.onclick = () => {
 };
 search.oninput = () => { query = search.value.toLowerCase().trim(); render(); };
 renderBanners(); renderFeaturedOffer(); render();
+
+
+// Cargar datos desde Firebase y actualizar la tienda para todos
+if (typeof loadDataFromFirebase === "function" && isFirebaseConfigured()){
+  loadDataFromFirebase().then(cloudData => {
+    data = cloudData;
+    store = data.store;
+
+    title.textContent = store.title;
+    subtitle.textContent = store.subtitle;
+    description.textContent = store.description;
+    waTop.href = `https://wa.me/51${store.whatsapp}`;
+    floatWa.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero información")}`;
+    if (typeof buyNowFloat !== "undefined") buyNowFloat.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent("Hola, quiero comprar una plataforma")}`;
+    terms.innerHTML = store.terms.split("\n").map(t => `<p>${t}</p>`).join("");
+    yapeNumber.textContent = store.yape || store.whatsapp;
+    plinNumber.textContent = store.plin || store.whatsapp;
+
+    renderBanners();
+    if (typeof renderFeaturedOffer === "function") renderFeaturedOffer();
+    render();
+  });
+}
