@@ -51,6 +51,36 @@ function renderBanners(){
   }
 }
 
+function renderFeaturedOffer(){
+  const offer = store.featuredOffer || {};
+  const badge = offer.badge || "🔥 Oferta destacada";
+  const title = offer.title || "Oferta destacada";
+  const text = offer.text || "";
+  const image = offer.image || "";
+  const buttonText = offer.buttonText || "📲 Consultar oferta";
+  const whatsappText = offer.whatsappText || "Hola, quiero consultar la oferta destacada";
+
+  const badgeEl = document.getElementById("featuredBadge");
+  const titleEl = document.getElementById("featuredTitle");
+  const textEl = document.getElementById("featuredText");
+  const imageEl = document.getElementById("featuredImage");
+  const waEl = document.getElementById("featuredWa");
+
+  if (badgeEl) badgeEl.textContent = badge;
+  if (titleEl) titleEl.textContent = title;
+  if (textEl) textEl.textContent = text;
+
+  if (imageEl) {
+    imageEl.src = image;
+    imageEl.style.display = image ? "block" : "none";
+  }
+
+  if (waEl) {
+    waEl.textContent = buttonText;
+    waEl.href = `https://wa.me/51${store.whatsapp}?text=${encodeURIComponent(whatsappText)}`;
+  }
+}
+
 function priceText(p){
   const n = soles(p.price);
   return currency === "USD" ? "$ " + (n / (Number(store.exchangeRate) || 3.75)).toFixed(2) : "S/ " + n.toFixed(2);

@@ -253,9 +253,7 @@
     animation:scrollPromos 24s linear infinite;
 }
 
-.top-carousel:hover .carousel-track{
-    animation-play-state:paused;
-}
+
 
 .carousel-item{
     min-width:300px;
@@ -284,4 +282,19 @@
 @keyframes scrollPromos{
     from{transform:translateX(0);}
     to{transform:translateX(-50%);}
+}
+
+
+/* BUGFIX: el carrusel nunca se detiene al pasar el cursor */
+.top-carousel:hover .carousel-track,
+.promo-carousel:hover .carousel-track,
+.carousel-track:hover{
+    animation-play-state:running !important;
+}
+
+/* BUGFIX: oferta destacada responsive y visible */
+.featured-offer img,
+#featuredImage{
+    display:block;
+    object-fit:cover;
 }

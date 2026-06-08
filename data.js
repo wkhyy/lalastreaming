@@ -40,13 +40,20 @@ const STORE_DEFAULT = {
 function loadData(){
   const saved = localStorage.getItem("lalastreaming_pro_data");
   if (!saved) return structuredClone(STORE_DEFAULT);
-  const data = JSON.parse(saved);
-  data.categories ||= STORE_DEFAULT.categories;
-  data.banners ||= STORE_DEFAULT.banners;
-  data.products ||= STORE_DEFAULT.products;
-  data.sales ||= [];
-  data.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
-  return data;
+
+  try {
+    const data = JSON.parse(saved);
+    data.store ||= STORE_DEFAULT.store;
+    data.store.featuredOffer ||= STORE_DEFAULT.store.featuredOffer;
+    data.categories ||= STORE_DEFAULT.categories;
+    data.banners ||= STORE_DEFAULT.banners;
+    data.products ||= STORE_DEFAULT.products;
+    data.sales ||= [];
+    return data;
+  } catch (error) {
+    console.error("Error cargando datos locales:", error);
+    return structuredClone(STORE_DEFAULT);
+  }
 }
 function saveData(data){ localStorage.setItem("lalastreaming_pro_data", JSON.stringify(data)); }
 function soles(price){ const n = parseFloat(String(price).replace(",", ".")); return Number.isFinite(n) ? n : 0; }

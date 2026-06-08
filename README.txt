@@ -70,3 +70,9 @@ Corrección carrusel:
 - El carrusel vuelve a generarse desde app.js con ID promoCarousel.
 - Ya no depende de bloques eliminados.
 - Se reforzó el CSS para que se vea y se anime correctamente.
+
+
+Bugfix:
+- Se corrigió que al editar la oferta destacada desaparezcan/no se vean los productos.
+- La oferta destacada ahora sí cambia texto, botón, mensaje e imagen.
+- Se quitó la pausa del carrusel al pasar el cursor; siempre seguirá en movimiento.

@@ -48,6 +48,7 @@ function safeSave(msg="Guardado ✅"){
 }
 
 function ensureFeatured(){
+  data.store ||= {};
   data.store.featuredOffer ||= {
     badge:"🔥 Oferta destacada",
     title:"Netflix Premium disponible",
@@ -84,12 +85,13 @@ function loadPanel(){
 }
 
 function loadFeaturedInputs(){
+  ensureFeatured();
   const f = data.store.featuredOffer || {};
-  fBadge.value = f.badge || "";
+  fBadge.value = f.badge || "🔥 Oferta destacada";
   fTitle.value = f.title || "";
   fText.value = f.text || "";
   fImage.value = f.image || "";
-  fButtonText.value = f.buttonText || "";
+  fButtonText.value = f.buttonText || "📲 Consultar oferta";
   fWhatsappText.value = f.whatsappText || "";
 }
 
@@ -101,14 +103,21 @@ function renderFeaturedPreview(){
     image: fImage.value || "",
     buttonText: fButtonText.value || "📲 Consultar oferta"
   };
-  previewBadge.textContent = f.badge;
-  previewTitle.textContent = f.title;
-  previewText.textContent = f.text;
-  previewButton.textContent = f.buttonText;
-  previewImage.src = f.image;
-  previewImage.style.display = f.image ? "block" : "none";
-  featuredAdminImage.src = f.image;
-  featuredAdminImage.style.display = f.image ? "block" : "none";
+
+  if (typeof previewBadge !== "undefined") previewBadge.textContent = f.badge;
+  if (typeof previewTitle !== "undefined") previewTitle.textContent = f.title;
+  if (typeof previewText !== "undefined") previewText.textContent = f.text;
+  if (typeof previewButton !== "undefined") previewButton.textContent = f.buttonText;
+
+  if (typeof previewImage !== "undefined") {
+    previewImage.src = f.image;
+    previewImage.style.display = f.image ? "block" : "none";
+  }
+
+  if (typeof featuredAdminImage !== "undefined") {
+    featuredAdminImage.src = f.image;
+    featuredAdminImage.style.display = f.image ? "block" : "none";
+  }
 }
 
 [fBadge, fTitle, fText, fImage, fButtonText, fWhatsappText].forEach(el => {
@@ -116,6 +125,7 @@ function renderFeaturedPreview(){
 });
 
 saveFeatured.onclick = () => {
+  ensureFeatured();
   data.store.featuredOffer = {
     badge: fBadge.value || "🔥 Oferta destacada",
     title: fTitle.value || "Oferta destacada",
@@ -124,7 +134,10 @@ saveFeatured.onclick = () => {
     buttonText: fButtonText.value || "📲 Consultar oferta",
     whatsappText: fWhatsappText.value || "Hola, quiero consultar la oferta destacada"
   };
-  safeSave("Oferta destacada guardada ✅");
+
+  saveData(data);
+  renderFeaturedPreview();
+  alert("Oferta destacada guardada ✅");
 };
 
 saveStore.onclick = () => {
@@ -232,6 +245,12 @@ function categoryOptions(selected){
 function renderProducts(){
   products.innerHTML = "";
   data.products.forEach((p,i) => {
+    p.active = p.active !== false;
+    p.offer = !!p.offer;
+    p.bestSeller = !!p.bestSeller;
+    p.image ||= "";
+    p.logo ||= p.name || "LOGO";
+    p.desc ||= "";
     const preview = p.image ? `<img src="${p.image}" onerror="this.style.display='none'">` : "Sin imagen";
     const div = document.createElement("div");
     div.className = "edit-product";
