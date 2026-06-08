@@ -298,3 +298,5 @@
     display:block;
     object-fit:cover;
 }
+
+.top-carousel:hover .carousel-track,.promo-carousel:hover .carousel-track,.carousel-track:hover{animation-play-state:running!important;}
